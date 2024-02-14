@@ -15,9 +15,8 @@ struct Position{
 };
 
 void setup() {
-  //Serial.begin(9600);
   radio.begin();
-  radio.openReadingPipe(1,address); // set the address for pipe 0
+  radio.openReadingPipe(1,address); // set the address for pipe 1
   radio.startListening(); // set as receiver
   
 
@@ -37,13 +36,10 @@ void loop() {
       struct Position Position1;
   if(radio.available()){
     radio.read(&Position1, sizeof(Position1));
-      //Serial.println(Position1.joystickX);
   }
   //forward = Position1.joystickX;
   side = map(Position1.joystickY, 0, 1024, -10, 10);
   forward = map(Position1.joystickX, 0, 1024, 75, 105);
-  //mr = map(forward, 0, 1024, 75, 105);
-  //ml = map(forward, 0, 1024, 75, 105);
   mr = forward - side;
   ml = forward + side;
   ESC.write(mr);
